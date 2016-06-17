@@ -23,7 +23,7 @@ comments <- read_csv("comments.csv")
 1. Not interested in precepting projects
 
 ```{r message=FALSE, fig.height=6, fig.width=6}
-library(dplyr)
+suppressPackageStartupMessages(library(dplyr))
 library(stringr)
 library(ggplot2)
 
