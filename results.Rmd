@@ -1,9 +1,8 @@
 ---
 title: "Preceptor Participation Suvery Results"
-output: 
-    html_notebook:
-        code_folding: hide
-
+output:
+  html_notebook:
+    code_folding: hide
 ---
 
 ```{r}
@@ -23,7 +22,7 @@ comments <- read_csv("comments.csv")
 1. No research ideas
 1. Not interested in precepting projects
 
-```{r message=FALSE}
+```{r message=FALSE, fig.height=6, fig.width=6}
 library(dplyr)
 library(stringr)
 library(ggplot2)
@@ -48,8 +47,16 @@ ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+#### Comments
 
-### Are there any other barriers to precepting resident projects which were not listed?
+```{r results='asis'}
+d <- filter(comments, question == 1)
+
+library(pander)
+pander(as.list(d$comment))
+```
+
+### Which of the following do you feel are barriers to attending resident presentations (short topic, seminar, and case)?
 
 1. Patient care responsibilities
 1. No perceived benefit for my position or career ladder advancement
@@ -57,7 +64,7 @@ ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
 1. Schedule conflicts with other meetings
 1. Topics are not interesting
 
-```{r}
+```{r q2, fig.height=6, fig.width=6}
 ans <- c("Patient care responsibilities" = "Patient care",
          "No perceived benefit for my position or career ladder advancement" = "Clinical ladder",
          "Topics are not interesting" = "Topics",
@@ -77,15 +84,22 @@ ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+#### Comments
 
-### Which of the following do you feel are barriers to attending resident presentations?
+```{r results='asis'}
+d <- filter(comments, question == 2)
+
+pander(as.list(d$comment))
+```
+
+### Which of the following would be most likely to increase your desire to participate in residency projects and presentations? 
 
 1. Merit-based salary increase
 1. Travel reimbursement for educational conference(s)
 1. Reimbursement for other educational expenditures (e.g., computer software, certification course, textbooks)
 1. Decreased number of student rotations to offset time spent on residency activities
 
-```{r}
+```{r q3, fig.height=6, fig.width=6}
 ans <- c("Merit-based salary increase" = "Salary",
          "Travel reimbursement for educational conferences" = "Travel",
          "Reimbursement for other educational expenditures" = "Educational reimbursement",
@@ -104,3 +118,10 @@ ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+#### Comments
+
+```{r results='asis'}
+d <- filter(comments, question == 3)
+
+pander(as.list(d$comment))
+```
