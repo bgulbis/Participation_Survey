@@ -51,4 +51,32 @@ ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
 
 ### Are there any other barriers to precepting resident projects which were not listed?
 
+1. Patient care responsibilities
+1. No perceived benefit for my position or career ladder advancement
+1. Not interested in residency activities
+1. Schedule conflicts with other meetings
+1. Topics are not interesting
+
+```{r}
+ans <- c("Patient care responsibilities" = "Patient care",
+         "No perceived benefit for my position or career ladder advancement" = "Clinical ladder",
+         "Topics are not interesting" = "Topics",
+         "Schedule conflicts with other meetings" = "Schedule conflicts",
+         "Not interested in residency activities" = "Not interested")
+
+results <- filter(responses, question == 2) %>%
+    mutate(score = (6 - rank) / 5,
+           option = str_replace_all(option, ans)) %>%
+    group_by(option) %>%
+    summarize(score = sum(score)) %>%
+    arrange(desc(score))
+    
+ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
+    geom_bar(stat = "identity", fill = "dark blue") +
+    xlab("") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
 ### Which of the following do you feel are barriers to attending resident presentations?
