@@ -75,8 +75,32 @@ ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
     geom_bar(stat = "identity", fill = "dark blue") +
     xlab("") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
 ```
 
 
 ### Which of the following do you feel are barriers to attending resident presentations?
+
+1. Merit-based salary increase
+1. Travel reimbursement for educational conference(s)
+1. Reimbursement for other educational expenditures (e.g., computer software, certification course, textbooks)
+1. Decreased number of student rotations to offset time spent on residency activities
+
+```{r}
+ans <- c("Merit-based salary increase" = "Salary",
+         "Travel reimbursement for educational conferences" = "Travel",
+         "Reimbursement for other educational expenditures" = "Educational reimbursement",
+         "Decreased number of student rotations to offset time spent on residency activities" = "Student rotations")
+
+results <- filter(responses, question == 3) %>%
+    mutate(score = (5 - rank) / 4,
+           option = str_replace_all(option, ans)) %>%
+    group_by(option) %>%
+    summarize(score = sum(score)) %>%
+    arrange(desc(score))
+    
+ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
+    geom_bar(stat = "identity", fill = "dark blue") +
+    xlab("") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
