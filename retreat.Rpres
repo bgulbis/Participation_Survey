@@ -1,0 +1,112 @@
+Preceptor Participation Suvery Results
+========================================================
+author:
+date: June 17, 2016
+autosize: true
+
+```{r echo=FALSE}
+library(readr)
+responses <- read_csv("responses.csv")
+comments <- read_csv("comments.csv")
+```
+
+Question 1
+========================================================
+
+Which of the following do you feel are barriers to precepting resident research projects?
+
+1. Disagree with processes of research subcommittee
+1. Intimidated by degree of involvement
+1. No perceived benefit for clinical ladder advancement
+1. No protected work time for residency projects
+1. No research ideas
+1. Not interested in precepting projects
+
+Results
+========================================================
+```{r echo=FALSE, message=FALSE}
+library(dplyr)
+library(stringr)
+library(ggplot2)
+
+ans <- c("Disagree with processes of research subcommittee" = "Research subcommittee",
+         "Intimidated by degree of involvement" = "Intimidating",
+         "No perceived benefit for clinical ladder advancement" = "Clinical ladder",
+         "No protected work time for residency projects" = "No time",
+         "No research ideas" = "No ideas",
+         "Not interested in precepting projects" = "Not interested")
+
+results <- filter(responses, question == 1) %>%
+    mutate(score = (7 - rank) / 6,
+           option = str_replace_all(option, ans)) %>%
+    group_by(option) %>%
+    summarize(score = sum(score)) %>%
+    arrange(desc(score))
+
+ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
+    geom_bar(stat = "identity", fill = "dark blue") +
+    xlab("") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14))
+```
+
+Question 2
+========================================================
+Which of the following do you feel are barriers to attending resident presentations (short topic, seminar, and case)?
+
+1. Patient care responsibilities
+1. No perceived benefit for my position or career ladder advancement
+1. Not interested in residency activities
+1. Schedule conflicts with other meetings
+1. Topics are not interesting
+
+Results
+========================================================
+```{r echo=FALSE}
+ans <- c("Patient care responsibilities" = "Patient care",
+         "No perceived benefit for my position or career ladder advancement" = "Clinical ladder",
+         "Topics are not interesting" = "Topics",
+         "Schedule conflicts with other meetings" = "Schedule conflicts",
+         "Not interested in residency activities" = "Not interested")
+
+results <- filter(responses, question == 2) %>%
+    mutate(score = (6 - rank) / 5,
+           option = str_replace_all(option, ans)) %>%
+    group_by(option) %>%
+    summarize(score = sum(score)) %>%
+    arrange(desc(score))
+
+ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
+    geom_bar(stat = "identity", fill = "dark blue") +
+    xlab("") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14))
+```
+
+Question 3
+========================================================
+Which of the following would be most likely to increase your desire to participate in residency projects and presentations?
+
+1. Merit-based salary increase
+1. Travel reimbursement for educational conference(s)
+1. Reimbursement for other educational expenditures (e.g., computer software, certification course, textbooks)
+1. Decreased number of student rotations to offset time spent on residency activities
+
+Results
+========================================================
+```{r echo=FALSE}
+ans <- c("Merit-based salary increase" = "Salary",
+         "Travel reimbursement for educational conferences" = "Travel",
+         "Reimbursement for other educational expenditures" = "Educational reimbursement",
+         "Decreased number of student rotations to offset time spent on residency activities" = "Student rotations")
+
+results <- filter(responses, question == 3) %>%
+    mutate(score = (5 - rank) / 4,
+           option = str_replace_all(option, ans)) %>%
+    group_by(option) %>%
+    summarize(score = sum(score)) %>%
+    arrange(desc(score))
+
+ggplot(results, aes(x = ordered(option, levels = results$option), y = score)) +
+    geom_bar(stat = "identity", fill = "dark blue") +
+    xlab("") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 14))
+```
